@@ -1,6 +1,11 @@
 # Python Image Error Metrics
 Python image error/similarity calculation examples (RMSE, PNSR, SSIM, RMSE for ROI) using OpenCV, numpy, skimage, pytorch
 
+|Image1|Image2|MaskImage|
+|:---:|:---:|:---:|
+|![TestImage1](https://user-images.githubusercontent.com/84174755/182813457-d810d6f1-3ecf-4ba9-9885-be22b9807d14.png)|![TestImage2](https://user-images.githubusercontent.com/84174755/182813948-4bd81720-328c-41ca-ab4f-5a1e91925dff.png)|![MaskImage](https://user-images.githubusercontent.com/84174755/182813961-8ae02ab6-a0b1-4bb0-b841-294535053b16.png)|
+
+
 파이썬을 이용한 이미지간의 에러/유사도를 비교하는 예제입니다.
 + RMSE (MSE)
 + PNSR
@@ -122,6 +127,10 @@ $PNSR = 10log_{10}{( \frac{MAX_{I}^{2}}{MSE})}$
 심지어 ROI 영역에 대한 계산만을 수행할 때, Mask이미지가 True 인지(흰색) False(검은색) 인지 구분하는 과정까지 포함하면 더욱 더 기피해야할 방법이죠.
 
 더 깔끔하게 계산할 수 있는 분들이 있으실텐데, 저는 이런 방식을 택했습니다.
+
+|Masked1|Masked2|
+|:---:|:---:|
+|![BitGT](https://user-images.githubusercontent.com/84174755/182814587-f268f0d2-6650-4ae1-94c4-a58fdf4f6e83.png)|![BitImg](https://user-images.githubusercontent.com/84174755/182814591-7efb8286-cc8d-432e-be80-d5d7f7c915e2.png)|
 
 + Img1, Img2를 Mask 이미지와 함께 Bit-wise 연산하여 masked 이미지 생성
 + np.count_nonzero(Mask) 를 이용한 non-zero 픽셀 갯수 계산
