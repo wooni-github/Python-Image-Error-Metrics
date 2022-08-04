@@ -1,6 +1,8 @@
 # Python Image Error Metrics
 Python image error/similarity calculation examples (RMSE, PNSR, SSIM, RMSE for ROI) using OpenCV, numpy, skimage, pytorch
 
+Image error metrics between two images TestImage1.png and TestImage2.png
+
 |Image1|Image2|MaskImage|
 |:---:|:---:|:---:|
 |![TestImage1](https://user-images.githubusercontent.com/84174755/182813457-d810d6f1-3ecf-4ba9-9885-be22b9807d14.png)|![TestImage2](https://user-images.githubusercontent.com/84174755/182813948-4bd81720-328c-41ca-ab4f-5a1e91925dff.png)|![MaskImage](https://user-images.githubusercontent.com/84174755/182813961-8ae02ab6-a0b1-4bb0-b841-294535053b16.png)|
@@ -40,8 +42,6 @@ Run :
 
     python ImageErrorMetric.py
     
-
-Image error metrics between two images TestImage1.png and TestImage2.png
 
 # **Structural Similarity Index (SSIM)**
 
