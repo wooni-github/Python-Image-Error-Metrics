@@ -53,21 +53,22 @@ Parameters (same as Torch1)
 + C2 = 0.03 ** 2
 + sigma = 1.5
 
-* * *
-+ [Torch1] 0.426 : Po-Hsun Su (https://github.com/Po-Hsun-Su/pytorch-ssim)
-+ [Torch2] 0.428 : Gongfan Fang (https://github.com/VainF/pytorch-msssim)
-+ [skimage] 0.428
+|Method|SSIM||
+|:---:|:---:|:---|
+|[Torch1]|0.426|Po-Hsun Su (https://github.com/Po-Hsun-Su/pytorch-ssim)|
+|[Torch2]|0.428|Gongfan Fang (https://github.com/VainF/pytorch-msssim)|
+|[skimage]|0.428||
 
 각 방식별 약간의 차이는 있지만 큰 차이가 없는 결과를 보여줍니다.
 
 # **Root mean square error (RMSE)**
 
-+ [numpy]  68.871 // calculation time :  0.054946 sec
-+ [skimage]  68.871 // calculation time :  0.047014 sec
-+ [Torch] 68.871 // calculation time :  0.019004 sec
-+ [ForLoop] 68.871 // calculation time :  9 sec
-
-* * *
+|Method|RMSE|Calculation time|
+|:---:|:---:|:---:|
+|[numpy]|68.871|0.054946 sec|
+|[skimage]|68.871|0.047014 sec|
+|[Torch]|68.871|0.019004 sec|
+|[ForLoop]|68.871|9 sec|
 
 이미지 - 이미지 간에 RMSE를 계산하는 방법에는 두가지가 있습니다.
 
@@ -116,7 +117,8 @@ PyTorch의 nn.MSELoss()를 사용하는 경우에는 $RMSE2$ 와 같은 값을 �
 
 
 # **Peak signal-to-noise ratio (PSNR)**
-29.75 dB
+
++ 29.75 dB
 
 PNSR은 아래 수식으로 계산됩니다. $MAX_{I}$ 는 이미지에서 가장 큰 값을 갖는 수치인데 보통 255로 설정합니다.
 
@@ -124,9 +126,11 @@ $PNSR = 10log_{10}{( \frac{MAX_{I}^{2}}{MSE})}$
 
 
 # **Root mean square error (RMSE) for Region of Interest(ROI)**
-+ [Numpy + Bit] 69.486 // calculation time :  0.029008 sec
-+ [ForLoop] 69.486 // calculation time :  5 sec
-
+|Method|RMSE (ROI)|Calculation time|
+|:---:|:---:|:---:|
+|[Numpy + Bit]|69.486|0.029008 sec|
+|[ForLoop]|69.486|5 sec|
+ 
 관심영역에 대한 RMSE계산입니다. 앞서 언급한 대로, Triple For Loop를 사용하는 방법은 매우 비효율적입니다.
 
 심지어 ROI 영역에 대한 계산만을 수행할 때, Mask이미지가 True 인지(흰색) False(검은색) 인지 구분하는 과정까지 포함하면 더욱 더 기피해야할 방법이죠.
@@ -137,10 +141,10 @@ $PNSR = 10log_{10}{( \frac{MAX_{I}^{2}}{MSE})}$
 |:---:|:---:|
 |![BitGT](https://user-images.githubusercontent.com/84174755/182814587-f268f0d2-6650-4ae1-94c4-a58fdf4f6e83.png)|![BitImg](https://user-images.githubusercontent.com/84174755/182814591-7efb8286-cc8d-432e-be80-d5d7f7c915e2.png)|
 
-+ Img1, Img2를 Mask 이미지와 함께 Bit-wise 연산하여 masked 이미지 생성
-+ np.count_nonzero(Mask) 를 이용한 non-zero 픽셀 갯수 계산
-+ 기존 RMSE방식과 유사하게 Masked1, Masked2 간의 전체 오차 계산
-+ 계산한 오차를 non-zero 픽셀 수로 나눔
+1. Img1, Img2를 Mask 이미지와 함께 Bit-wise 연산하여 masked 이미지 생성
+2. np.count_nonzero(Mask) 를 이용한 non-zero 픽셀 갯수 계산
+3. 기존 RMSE방식과 유사하게 Masked1, Masked2 간의 전체 픽셀 차이의 합 계산
+4. 계산한 오차를 non-zero 픽셀 수로 나눔
 
 
 
