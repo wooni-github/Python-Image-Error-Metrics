@@ -15,7 +15,7 @@ import pytorch_mssim
 
 _round = 3
 
-def RMSE_numpy(GT, Img):
+def RMSE_numpy(GT, Img, isMSE = False):
     '''
     Must convert Img (uint8) to float/double to calculate correct results.
     ex) uint8 : a (0), b (100)
@@ -25,9 +25,13 @@ def RMSE_numpy(GT, Img):
     GT_ = np.array(GT, dtype=np.float32)
     Img_ = np.array(Img, dtype=np.float32)
     MSE = np.mean((GT_-Img_)**2)
+    
+    if isMSE:
+        return round(MSE, _round)
+    
     return round(np.sqrt(MSE), _round)
 
-def RMSE_ForLoop(GT, Img):
+def RMSE_ForLoop(GT, Img, isMSE = False):
     GT_ = np.array(GT, dtype=np.float32)
     Img_ = np.array(Img, dtype=np.float32)
     h, w, c = GT.shape
@@ -37,9 +41,13 @@ def RMSE_ForLoop(GT, Img):
             for d in range(c):
                 sum +=  (GT_[y, x, d] - Img_[y, x, d])**2
     sum /= (h*w*c)
+    
+    if isMSE:
+        return round(sum, _round)
+    
     return round(np.sqrt(sum), _round)
 
-def RMSE_ForLoop_ROI(GT, Img, Mask):
+def RMSE_ForLoop_ROI(GT, Img, Mask, isMSE = False):
     GT_ = np.array(GT, dtype=np.float32)
     Img_ = np.array(Img, dtype=np.float32)
     h, w, c = GT.shape
@@ -51,10 +59,14 @@ def RMSE_ForLoop_ROI(GT, Img, Mask):
                 for d in range(c):
                     sum += (GT_[y, x, d] - Img_[y, x, d])**2
                     n += 1
-    sum /= n
+    sum /= n  
+        
+    if isMSE:
+        return round(sum, _round)
+    
     return round(np.sqrt(sum), _round)
 
-def RMSE_numpy_Bit_ROI(GT, Img, Mask):
+def RMSE_numpy_Bit_ROI(GT, Img, Mask, isMSE = False):
     masked_GT = cv2.bitwise_and(GT, Mask)  # GT의 마스크 이미지영역만 crop
     masked_Img = cv2.bitwise_and(Img, Mask)
 
@@ -63,7 +75,12 @@ def RMSE_numpy_Bit_ROI(GT, Img, Mask):
 
     n = np.count_nonzero(Mask)
     sum = ((masked_GT - masked_Img) ** 2).sum()
-    RMSE = round(np.sqrt(sum/ n), _round)
+    sum /= n
+        
+    if isMSE:
+        return round(sum, _round)
+    
+    RMSE = round(np.sqrt(sum), _round)
     return RMSE
 
 def SSIM_skimage(GT, Img):
@@ -82,7 +99,7 @@ def SSIM_skimage(GT, Img):
     return round(SSIM, _round)
 
 def PNSR(GT, Img, MSEMethod):
-    MSE = MSEMethod(GT, Img)
+    MSE = MSEMethod(GT, Img, isMSE = True)
     if MSE == 0:
         return 100
     PIXEL_MAX = 255.0
