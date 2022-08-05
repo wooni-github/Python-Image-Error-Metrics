@@ -153,7 +153,9 @@ def SSIM_torch2(GT, Img):
     ssim_val = round(pytorch_mssim.ssim( GT_, Img_, data_range=255, size_average=False, K = (0.01 ** 2, 0.03 ** 2), nonnegative_ssim=True).detach().numpy()[0], 3)
     return ssim_val
 
-def RMSE_skimage(GT, Img):
+def RMSE_skimage(GT, Img, isMSE = False):
+    if isMSE:
+        return metrics.mean_squared_error(GT, Img)
     return round(math.sqrt(metrics.mean_squared_error(GT, Img)), _round)
 
 if __name__ == '__main__':
