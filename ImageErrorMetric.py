@@ -98,7 +98,7 @@ def SSIM_skimage(GT, Img):
 
     return round(SSIM, _round)
 
-def PNSR(GT, Img, MSEMethod):
+def PSNR(GT, Img, MSEMethod):
     MSE = MSEMethod(GT, Img, isMSE = True)
     if MSE == 0:
         return 100
@@ -162,7 +162,7 @@ if __name__ == '__main__':
     '''
     1) GT, Input, Mask images have same width and height
     2) Reference RMSE : Pytorch nn.MSELoss 
-    3) Assume all images have at least one maximum RGB value, 255 (for PNSR)
+    3) Assume all images have at least one maximum RGB value, 255 (for PSNR)
     4) SSIM is calculated using parameters of torch_SSIM.py 
     5) for RMSE in ROI, Mask image is provided in binary image. Black(0) : RONI(Region of Non-Interest), White(255) : ROI(Region of Interest)   
     '''
@@ -185,7 +185,7 @@ if __name__ == '__main__':
 
     print()
     print('**** Peak signal-to-noise ratio (PSNR)')
-    print(PNSR(GT, Input, RMSE_numpy), 'dB')
+    print(PSNR(GT, Input, RMSE_numpy), 'dB')
 
     print()
     print('**** Root mean square error (RMSE) for Region of Interest(ROI)')
