@@ -1,5 +1,5 @@
 # Python Image Error Metrics
-Python image error/similarity calculation examples (RMSE, PNSR, SSIM, RMSE for ROI) using OpenCV, numpy, skimage, pytorch
+Python image error/similarity calculation examples (RMSE, PSNR, SSIM, RMSE for ROI) using OpenCV, numpy, skimage, pytorch
 
 Image error metrics between two images TestImage1.png and TestImage2.png
 
@@ -10,7 +10,7 @@ Image error metrics between two images TestImage1.png and TestImage2.png
 
 파이썬을 이용한 이미지간의 에러/유사도를 비교하는 예제입니다.
 + RMSE (MSE)
-+ PNSR
++ PSNR
 + SSIM
 + RMSE (ROI) : Mask이미지는 검정(배경), 흰색(관심영역)으로 제공. 관심영역에 대해서만 RMSE를 계산
 
@@ -120,9 +120,9 @@ PyTorch의 nn.MSELoss()를 사용하는 경우에는 $RMSE2$ 와 같은 값을 �
 
 + 11.37 dB
 
-PNSR은 아래 수식으로 계산됩니다. $MAX_{I}$ 는 이미지에서 가장 큰 값을 갖는 수치인데 보통 255로 설정합니다.
+PSNR은 아래 수식으로 계산됩니다. $MAX_{I}$ 는 이미지에서 가장 큰 값을 갖는 수치인데 보통 255로 설정합니다.
 
-$PNSR = 10log_{10}{( \frac{MAX_{I}^{2}}{MSE})}$
+$PSNR = 10log_{10}{( \frac{MAX_{I}^{2}}{MSE})}$
 
 
 # **Root mean square error (RMSE) for Region of Interest(ROI)**
