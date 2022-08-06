@@ -15,7 +15,7 @@ import pytorch_mssim
 
 _round = 3
 
-def RMSE_numpy(GT, Img, isMSE = False):
+def RMSE_numpy(GT, Img):
     '''
     Must convert Img (uint8) to float/double to calculate correct results.
     ex) uint8 : a (0), b (100)
@@ -26,12 +26,9 @@ def RMSE_numpy(GT, Img, isMSE = False):
     Img_ = np.array(Img, dtype=np.float32)
     MSE = np.mean((GT_-Img_)**2)
     
-    if isMSE:
-        return round(MSE, _round)
-    
     return round(np.sqrt(MSE), _round)
 
-def RMSE_ForLoop(GT, Img, isMSE = False):
+def RMSE_ForLoop(GT, Img):
     GT_ = np.array(GT, dtype=np.float32)
     Img_ = np.array(Img, dtype=np.float32)
     h, w, c = GT.shape
@@ -40,14 +37,11 @@ def RMSE_ForLoop(GT, Img, isMSE = False):
         for x in range(w):
             for d in range(c):
                 sum +=  (GT_[y, x, d] - Img_[y, x, d])**2
-    sum /= (h*w*c)
-    
-    if isMSE:
-        return round(sum, _round)
-    
+    sum /= (h*w*c) 
+
     return round(np.sqrt(sum), _round)
 
-def RMSE_ForLoop_ROI(GT, Img, Mask, isMSE = False):
+def RMSE_ForLoop_ROI(GT, Img, Mask):
     GT_ = np.array(GT, dtype=np.float32)
     Img_ = np.array(Img, dtype=np.float32)
     h, w, c = GT.shape
@@ -60,13 +54,10 @@ def RMSE_ForLoop_ROI(GT, Img, Mask, isMSE = False):
                     sum += (GT_[y, x, d] - Img_[y, x, d])**2
                     n += 1
     sum /= n  
-        
-    if isMSE:
-        return round(sum, _round)
     
     return round(np.sqrt(sum), _round)
 
-def RMSE_numpy_Bit_ROI(GT, Img, Mask, isMSE = False):
+def RMSE_numpy_Bit_ROI(GT, Img, Mask):
     masked_GT = cv2.bitwise_and(GT, Mask)  # GT의 마스크 이미지영역만 crop
     masked_Img = cv2.bitwise_and(Img, Mask)
 
@@ -76,10 +67,7 @@ def RMSE_numpy_Bit_ROI(GT, Img, Mask, isMSE = False):
     n = np.count_nonzero(Mask)
     sum = ((masked_GT - masked_Img) ** 2).sum()
     sum /= n
-        
-    if isMSE:
-        return round(sum, _round)
-    
+
     RMSE = round(np.sqrt(sum), _round)
     return RMSE
 
@@ -98,25 +86,18 @@ def SSIM_skimage(GT, Img):
 
     return round(SSIM, _round)
 
-def PSNR(GT, Img, MSEMethod):
-    MSE = MSEMethod(GT, Img, isMSE = True)
-    if MSE == 0:
+def PSNR(GT, Img, RMSEMethod):
+    RMSE = RMSEMethod(GT, Img)
+    if RMSE == 0:
         return 100
     PIXEL_MAX = 255.0
-    return round(20 * math.log10(PIXEL_MAX / math.sqrt(MSE)), _round)
+    return round(20 * math.log10(PIXEL_MAX / RMSE), _round)
 
 
 def preprocess(img):
     x = np.array(img).astype(np.float32)
     x = torch.from_numpy(x)
     return x
-
-def RMSE_torch(GT, Img):
-    criterion = nn.MSELoss()
-    GT_ = preprocess(GT)
-    Img_ = preprocess(Img)
-    MSE = criterion(GT_, Img_)
-    return round(np.sqrt(MSE.cpu().detach().numpy()), _round)
 
 def RMSE_torch(GT, Img):
     criterion = nn.MSELoss()
@@ -153,9 +134,7 @@ def SSIM_torch2(GT, Img):
     ssim_val = round(pytorch_mssim.ssim( GT_, Img_, data_range=255, size_average=False, K = (0.01 ** 2, 0.03 ** 2), nonnegative_ssim=True).detach().numpy()[0], 3)
     return ssim_val
 
-def RMSE_skimage(GT, Img, isMSE = False):
-    if isMSE:
-        return metrics.mean_squared_error(GT, Img)
+def RMSE_skimage(GT, Img):
     return round(math.sqrt(metrics.mean_squared_error(GT, Img)), _round)
 
 if __name__ == '__main__':
