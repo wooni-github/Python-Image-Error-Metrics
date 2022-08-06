@@ -122,7 +122,7 @@ PyTorch의 nn.MSELoss()를 사용하는 경우에는 $RMSE2$ 와 같은 값을 �
 
 PSNR은 아래 수식으로 계산됩니다. $MAX_{I}$ 는 이미지에서 가장 큰 값을 갖는 수치인데 보통 255로 설정합니다.
 
-$PSNR = 10log_{10}{( \frac{MAX_{I}^{2}}{MSE})}$
+$PSNR = 10log_{10}{( \frac{MAX_{I}^{2}}{MSE})} = 20log_{10}{( \frac{MAX_{I}}{RMSE})}$
 
 
 # **Root mean square error (RMSE) for Region of Interest(ROI)**
